@@ -1,3 +1,5 @@
+import { reactive } from "../reactivity/reactive";
+
 describe("effect", () => {
   // it.skip: 跳过测试 
   it("should be true", () => {

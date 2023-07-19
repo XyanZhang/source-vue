@@ -1,3 +1,4 @@
+import { effect } from "../effect";
 import { reactive } from "../reactive";
 
 describe("effect", () => {
@@ -5,7 +6,7 @@ describe("effect", () => {
   it("should be true", () => {
     expect(true).toBe(true);
   });
-  it.skip("should be true", () => {
+  it("should be true", () => {
     const user = reactive({
       age: 10
     })

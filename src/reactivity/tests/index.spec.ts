@@ -1,4 +1,4 @@
-import { add } from "../reactivity";
+import { add } from "..";
 
 it('init', () => {
   let sum:any = add(1, 2);

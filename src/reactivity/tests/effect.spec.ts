@@ -1,4 +1,4 @@
-import { reactive } from "../reactivity/reactive";
+import { reactive } from "../reactive";
 
 describe("effect", () => {
   // it.skip: 跳过测试 

@@ -32,4 +32,15 @@ describe("effect", () => {
     // 每个effect 函数都会new 一个 ReactiveEffect 实例, 所以 每个 effect 都有自己的 activeEffect
     expect(nextAge).toBe(12);
   });
+  it('', () => {
+    // 1. effect -> function (runner) - fn -> return runner返回值
+    let foo = 10;
+    const runner = effect(() => {
+      foo++;
+      return "foo";
+    });
+    expect(foo).toBe(11);
+    const r = runner();
+    expect(r).toBe("foo");
+  })
 })

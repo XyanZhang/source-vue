@@ -8,7 +8,7 @@ class ReactiveEffect {
   run() {
     activeEffect = this; // 将当前的ReactiveEffect赋值给activeEffect
     // 不是，每个effect都有一个ReactiveEffect实例
-    this._fn();
+    return this._fn();
   }
 }
 
@@ -53,4 +53,6 @@ export function effect(fn) {
   // 调用effect时，会执行fn
   const _effect = new ReactiveEffect(fn);
   _effect.run();
+
+  return _effect.run.bind(_effect);
 }

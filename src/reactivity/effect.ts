@@ -2,7 +2,7 @@ let activeEffect:any = null;
 // 用于依赖收集，当前ReactiveEffect
 class ReactiveEffect {
   private _fn: any;
-  constructor(public fn) {
+  constructor(public fn, public scheduler?) {
     this._fn = fn;
   }
   run() {
@@ -44,14 +44,20 @@ export function trigger(target, key) {
   const dep = depsMap.get(key);
   if (dep) {
     dep.forEach(effect => {
-      effect.run();
+      if(effect.scheduler) {
+        effect.scheduler();
+      }else {
+        effect.run();
+      }
     })
   }
 }
 
-export function effect(fn) {
+export function effect(fn, options: any = {}) {
   // 调用effect时，会执行fn
-  const _effect = new ReactiveEffect(fn);
+  const scheduler = options.scheduler;
+  const _effect = new ReactiveEffect(fn, scheduler);
+  // const { scheduler } = options;
   _effect.run();
 
   return _effect.run.bind(_effect);

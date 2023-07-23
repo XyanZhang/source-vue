@@ -41,6 +41,7 @@ describe("effect", () => {
     });
     expect(foo).toBe(11);
     const r = runner();
+    expect(foo).toBe(12);
     expect(r).toBe("foo");
   })
 })

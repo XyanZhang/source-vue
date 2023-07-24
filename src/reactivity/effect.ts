@@ -1,6 +1,7 @@
 let activeEffect:any = null;
 // 用于依赖收集，当前ReactiveEffect
 class ReactiveEffect {
+  public deps = []; // 用于存储effect; 在stop时，将effect从deps中移除
   private _fn: any;
   constructor(public fn, public scheduler?) {
     this._fn = fn;
@@ -10,6 +11,15 @@ class ReactiveEffect {
     // 不是，每个effect都有一个ReactiveEffect实例
     return this._fn();
   }
+  stop() {
+    this.deps.forEach((dep: any) => {
+      dep.delete(this);
+    });
+  }
+}
+
+export function stop(runner) {
+  runner.effect.stop();
 }
 
 // 将容器放到WeakMap中, 为什么要用WeakMap，因为WeakMap的key是弱引用，不会造成内存泄漏
@@ -33,6 +43,7 @@ export function track(target, key) {
   }
   // set 操作
   dep.add(activeEffect); // 将当前的ReactiveEffect存到容器中
+  activeEffect && activeEffect.deps.push(dep); // 将dep存到ReactiveEffect中, 用于stop时，将effect从deps中移除
 }
 
 export function trigger(target, key) {
@@ -59,6 +70,8 @@ export function effect(fn, options: any = {}) {
   const _effect = new ReactiveEffect(fn, scheduler);
   // const { scheduler } = options;
   _effect.run();
+  let runner:any = _effect.run.bind(_effect)
+  runner.effect = _effect;
 
-  return _effect.run.bind(_effect);
+  return runner;
 }

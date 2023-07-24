@@ -3,7 +3,7 @@ let activeEffect:any = null;
 class ReactiveEffect {
   public deps = []; // 用于存储effect; 在stop时，将effect从deps中移除
   private _fn: any;
-  constructor(public fn, public scheduler?) {
+  constructor(public fn, public scheduler?, public onStop?: Function) {
     this._fn = fn;
   }
   run() {
@@ -15,6 +15,7 @@ class ReactiveEffect {
     this.deps.forEach((dep: any) => {
       dep.delete(this);
     });
+    this.onStop && this.onStop();
   }
 }
 
@@ -65,9 +66,10 @@ export function trigger(target, key) {
 }
 
 export function effect(fn, options: any = {}) {
-  // 调用effect时，会执行fn
   const scheduler = options.scheduler;
-  const _effect = new ReactiveEffect(fn, scheduler);
+  const onStop = options.onStop;
+  // 调用effect时，会执行fn
+  const _effect = new ReactiveEffect(fn, scheduler, onStop);
   // const { scheduler } = options;
   _effect.run();
   let runner:any = _effect.run.bind(_effect)

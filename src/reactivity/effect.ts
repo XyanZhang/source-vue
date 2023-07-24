@@ -42,9 +42,11 @@ export function track(target, key) {
     dep = new Set();
     depsMap.set(key, dep); // 保存 key对应的容器
   }
+  // 有可能没有activeEffect
+  if(!activeEffect) return ;
   // set 操作
   dep.add(activeEffect); // 将当前的ReactiveEffect存到容器中
-  activeEffect && activeEffect.deps.push(dep); // 将dep存到ReactiveEffect中, 用于stop时，将effect从deps中移除
+  activeEffect.deps.push(dep); // 将dep存到ReactiveEffect中, 用于stop时，将effect从deps中移除
 }
 
 export function trigger(target, key) {

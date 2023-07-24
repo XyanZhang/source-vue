@@ -1,5 +1,7 @@
 import { effect } from "../effect";
 import { reactive } from "../reactive";
+// scheduler 的用处
+
 
 it('scheduler', () => {
   // 1. effect 第二个参数 scheduler

@@ -155,3 +155,12 @@ yarn test reactive # 测试单个文件 reactive
 流程：
 
 - watchEffect -> createWatcher -> watch
+
+### scheduler 任务调度
+
+scheduler 负责管理组件的更新队列，以及控制组件更新的时机和方式。它基于浏览器的事件循环机制，将组件更新的任务分解为微任务和宏任务，并根据优先级和异步策略来调度任务的执行
+
+- 排队： scheduler 会将需要更新的组件添加到更新队列中，确保它们按照正确的顺序进行更新，避免出现不一致的视图状态。
+- 调度： scheduler 使用浏览器提供的 requestAnimationFrame API 或 setImmediate API（取决于环境）来调度更新任务的执行。
+- 优化： scheduler 利用任务优先级和异步策略来确定更新任务的执行时机，可以根据情况合并和批量执行更新，以提高性能和效率。
+- 防抖节流： scheduler 还可以通过防抖和节流的机制来优化频繁触发的更新，减少不必要的重复计算和渲染。

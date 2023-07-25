@@ -20,3 +20,17 @@ export function reactive(raw) {
     }
   })
 }
+
+export function readonly(raw) {
+  return new Proxy(raw, {
+    get(target, key) {
+      let res =  Reflect.get(target, key);
+
+      return res;
+    },
+    set(target, key:any, value) {
+      console.warn(`key: ${key} set failed`);
+      return true;
+    }
+  })
+}

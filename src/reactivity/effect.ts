@@ -1,6 +1,7 @@
 let activeEffect:any = null;
 // 用于依赖收集，当前ReactiveEffect
 class ReactiveEffect {
+  active = true; // 默认是激活的
   public deps = []; // 用于存储effect; 在stop时，将effect从deps中移除
   private _fn: any;
   constructor(public fn, public scheduler?, public onStop?: Function) {
@@ -12,10 +13,15 @@ class ReactiveEffect {
     return this._fn();
   }
   stop() {
-    this.deps.forEach((dep: any) => {
-      dep.delete(this);
-    });
-    this.onStop && this.onStop();
+    if(this.active) {
+      
+      this.deps.forEach((dep: any) => {
+        dep.delete(this);
+      });
+      this.onStop && this.onStop();
+
+      this.active = false;
+    }
   }
 }
 

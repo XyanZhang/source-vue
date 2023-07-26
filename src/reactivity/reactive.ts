@@ -18,7 +18,6 @@ export function reactive(raw) {
     },
     set(target, key, value) {
       const res = Reflect.set(target, key, value);
-
       // 触发依赖
       trigger(target, key); // target: {age: 10}, key: age
 
@@ -28,12 +27,17 @@ export function reactive(raw) {
 }
 
 export function readonly(raw) {
-  return new Proxy(raw, {
-    get(target, key) {
+  console.log('raw', raw);
+  return createReadonlyObject(raw);
+}
 
+function createReadonlyObject(raw) {
+  let proxy = new Proxy(raw, {
+    get(target, key, receiver) {
+      console.log('receiver', receiver)
       if(key === '_is_readonly') return true;
       
-      let res =  Reflect.get(target, key);
+      let res =  Reflect.get(target, key, receiver);
       if(isObject(res)) {
         return readonly(res);
       }
@@ -44,8 +48,9 @@ export function readonly(raw) {
       return true;
     }
   })
+  console.log(proxy)
+  return proxy;
 }
-
 
 export function isReactive(value) {
   // 通过增加一个标识来判断是否是响应式对象

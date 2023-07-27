@@ -2,7 +2,7 @@ import { track, trigger } from "./effect";
 
 let isObject = (val) => typeof val === 'object' && val !== null;
 
-function createGetter(isReadonly) {
+function createGetter(isReadonly, shallow = false) {
   return function get(target, key, receiver) {
     const res = Reflect.get(target, key, receiver);
     if(key === '_is_reactive') {
@@ -14,6 +14,10 @@ function createGetter(isReadonly) {
     // 依赖收集
     track(target, key); // target: {age: 10}, key: age
 
+    if (shallow) {
+      return res;
+    }
+
     if(isObject(res)) {
       return isReadonly ? readonly(res) : reactive(res);
     }
@@ -22,7 +26,7 @@ function createGetter(isReadonly) {
   }
 }
 
-function createSetter(isReadonly) {
+function createSetter(isReadonly = false, isShallow = false) {
   return function setter(target, key, value) {
     const res = Reflect.set(target, key, value);
     if(isReadonly) {
@@ -39,15 +43,18 @@ export function reactive(raw) {
   return createReactiveObject(raw)
 }
 
-export function createReactiveObject(raw, isReadonly?) {
+export function createReactiveObject(raw, isReadonly?, isShallow?) {
   return new Proxy(raw, {
-    get: createGetter(isReadonly),
-    set: createSetter(isReadonly)
+    get: createGetter(isReadonly, isShallow),
+    set: createSetter(isReadonly, isShallow)
   })
 }
 
 export function readonly(raw) {
   return createReactiveObject(raw, true);
+}
+export function shallowReadonly(raw) {
+  return createReactiveObject(raw, true, true);
 }
 
 export function isReactive(value) {

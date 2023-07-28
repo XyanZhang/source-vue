@@ -1,6 +1,6 @@
 import { effect } from "../effect";
 import { reactive } from "../reactive";
-import { isRef, ref, unRef,proxyRefs } from "../ref";
+import { isRef, proxyRefs, ref, unRef } from "../ref";
 describe("ref", () => {
   it("should be reactive", () => {
     const a = ref(1);

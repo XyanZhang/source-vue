@@ -1,0 +1,1 @@
+export let isObject = (val) => typeof val === 'object' && val !== null;

@@ -8,6 +8,8 @@ class ComputedRefImpl {
   constructor(getter) {
     this._getter = getter;
 
+    // 利用scheduler，当依赖的值发生变化时，重新计算
+    // 不会一直执行getter
     this.effect = new ReactiveEffect(getter, () => {
       if (!this._dirty) {
         this._dirty = true;
@@ -20,17 +22,6 @@ class ComputedRefImpl {
       this._dirty = false;
     }
     return this._value;
-  }
-  set value(newValue) {
-    // 对比新旧值，如果不一样，就更新
-    if (newValue !== this._value) {
-      this._setter(newValue);
-    }
-
-  }
-  _setter(newValue) {
-    this._value = newValue;
-    this._dirty = false;
   }
 }
 

@@ -48,6 +48,13 @@ export function track(target, key) {
     dep = new Set();
     depsMap.set(key, dep); // 保存 key对应的容器
   }
+
+  trackEffects(dep)
+}
+
+export function trackEffects(dep) {
+
+  // todo: 待优化，如果已经收集，就不需要再次收集
   // 有可能没有activeEffect
   if(!activeEffect) return ;
   // set 操作
@@ -56,20 +63,32 @@ export function track(target, key) {
 }
 
 export function trigger(target, key) {
+  let deps: any = [];
   // 触发依赖
   const depsMap = targetMap.get(target);
   if (!depsMap) {
     return;
   }
   const dep = depsMap.get(key);
-  if (dep) {
-    dep.forEach(effect => {
-      if(effect.scheduler) {
-        effect.scheduler();
-      }else {
-        effect.run();
-      }
-    })
+  deps.push(dep)
+
+  const effects:any = [];
+  deps.forEach((dep: any) => {
+    effects.push(...dep)
+  })
+}
+
+export function triggerEffects(dep) {
+  // 执行收集到的所有的 effect 的 run 方法
+  for (const effect of dep) {
+    if (effect.scheduler) {
+      // scheduler 可以让用户自己选择调用的时机
+      // 这样就可以灵活的控制调用了
+      // 在 runtime-core 中，就是使用了 scheduler 实现了在 next ticker 中调用的逻辑
+      effect.scheduler();
+    } else {
+      effect.run();
+    }
   }
 }
 

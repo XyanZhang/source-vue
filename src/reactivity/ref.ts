@@ -1,4 +1,4 @@
-import { track, trigger } from "./effect";
+import { track, trackEffects, trigger, triggerEffects } from "./effect";
 import { isObject } from "./utils";
 import { reactive } from './reactive';
 
@@ -55,4 +55,12 @@ export function proxyRefs(objectWithRefs) {
       }
     },
   });
+}
+
+export function triggerRefValue(ref) {
+  triggerEffects(ref.dep);
+}
+
+export function trackRefValue(ref) {
+  trackEffects(ref.dep)
 }

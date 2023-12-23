@@ -9,10 +9,13 @@ export function render(vnode, container) {
 
 function patch(vnode, container) {
 
-  // 处理组件
-
+  
   // 判断 是不是 element
+  // processElement(vnode, container)
+  
+  // 处理组件
   processComponent(vnode, container)
+  
 }
 
 function processComponent(vnode: any, container: any) { 
@@ -34,4 +37,3 @@ function setupRenderEffect(instance: any, container: any) {
 
   patch(subTree, container);
 }
-

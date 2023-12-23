@@ -1,10 +1,13 @@
+import { h } from "../../lib/guide-vue.esm.js";
+
+
 export const App = {
   // .vue
   // <template>
   
   // render
   render() {
-    return history("div", "hi, "+this.msg);
+    return h("div", "hi, "+this.msg);
   },
   setUp() {
     return{

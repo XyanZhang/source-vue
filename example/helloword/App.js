@@ -1,17 +1,32 @@
-import { h } from "../../lib/guide-vue.esm.js";
-
+import { h } from '../../lib/guide-vue.esm.js';
 
 export const App = {
   // .vue
   // <template>
-  
+
   // render
   render() {
-    return h("div", "hi, "+this.msg);
+    return h(
+      'div',
+      {
+        id: 'root',
+        class: ['red', 'small'],
+      },
+      // string
+      // "hi, "+this.msg
+      [
+        h('p', { class: 'child-class' }, 'hi'),
+        h('p', { class: 'child-class2' }, 'hi 2'),
+        h('p', { class: 'child-class3' }, [
+          h('span', { class: 'span-class' }, 'hi span'),
+          h('span', { class: 'span-class2' }, 'hi span2'),
+        ]),
+      ]
+    );
   },
-  setUp() {
-    return{
-      msg: "mini-vue"
-    }
-  }
-}
+  setup() {
+    return {
+      msg: 'mini-vue',
+    };
+  },
+};

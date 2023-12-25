@@ -1,11 +1,14 @@
 import { h } from '../../lib/guide-vue.esm.js';
 
+window.self = null;
 export const App = {
   // .vue
   // <template>
 
   // render
   render() {
+    window.self = this;
+
     return h(
       'div',
       {
@@ -14,7 +17,7 @@ export const App = {
       },
       // setupState
       // this.$el
-      "hi, "+this.msg
+      'hi, ' + this.msg
       // [
       //   h('p', { class: 'child-class' }, 'hi'),
       //   h('p', { class: 'child-class2' }, 'hi 2'),

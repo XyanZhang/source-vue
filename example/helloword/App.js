@@ -12,21 +12,22 @@ export const App = {
         id: 'root',
         class: ['red', 'small'],
       },
-      // string
-      // "hi, "+this.msg
-      [
-        h('p', { class: 'child-class' }, 'hi'),
-        h('p', { class: 'child-class2' }, 'hi 2'),
-        h('p', { class: 'child-class3' }, [
-          h('span', { class: 'span-class' }, 'hi span'),
-          h('span', { class: 'span-class2' }, 'hi span2'),
-        ]),
-      ]
+      // setupState
+      // this.$el
+      "hi, "+this.msg
+      // [
+      //   h('p', { class: 'child-class' }, 'hi'),
+      //   h('p', { class: 'child-class2' }, 'hi 2'),
+      //   h('p', { class: 'child-class3' }, [
+      //     h('span', { class: 'span-class' }, 'hi span'),
+      //     h('span', { class: 'span-class2' }, 'hi span2'),
+      //   ]),
+      // ]
     );
   },
   setup() {
     return {
-      msg: 'mini-vue',
+      msg: 'mini-vue hello Xyan',
     };
   },
 };

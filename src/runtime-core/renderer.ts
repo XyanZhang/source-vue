@@ -1,4 +1,5 @@
 import { isObject } from "../reactivity/utils";
+import { ShapeFlag } from "../shared";
 import { createComponentInstance, setupComponent } from "./component";
 
 export function render(vnode, container) {
@@ -9,14 +10,14 @@ export function render(vnode, container) {
 }
 
 function patch(vnode, container) {
-
+  const { shapeFlag } = vnode;
   
   // 判断 是不是 element
   console.log(vnode.type);
-  if(typeof vnode.type === "string") {
+  if(shapeFlag & ShapeFlag.ELEMENT) {
     // element
     processElement(vnode, container)
-  }else if(isObject(vnode.type)) {
+  }else if(shapeFlag & ShapeFlag.STATEFUL_COMPONENT) {
     // 处理组件
     processComponent(vnode, container)
   }
@@ -55,11 +56,10 @@ function processElement(vnode: any, container: any) {
 
 function mountElement(vnode: any, container: any) {
   const el = (vnode.el = document.createElement(vnode.type));
-
-  const { children } = vnode;
-  if(typeof children === 'string') {
+  const { children, shapeFlag } = vnode;
+  if(shapeFlag & ShapeFlag.TEXT_CHILDREN) {
     el.textContent = children;
-  }else if(Array.isArray(children)) {
+  }else if(shapeFlag & ShapeFlag.ARRAY_CHILDREN) {
     // vnode 
     mountChildren(vnode, el);
   }

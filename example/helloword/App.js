@@ -14,6 +14,9 @@ export const App = {
       {
         id: 'root',
         class: ['red', 'small'],
+        onClick() {
+          console.log('render');
+        }
       },
       // setupState
       // this.$el

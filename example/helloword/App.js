@@ -1,5 +1,5 @@
 import { h } from '../../lib/guide-vue.esm.js';
-
+import { Foo } from './Foo.js';
 window.self = null;
 export const App = {
   // .vue
@@ -16,11 +16,16 @@ export const App = {
         class: ['red', 'small'],
         onClick() {
           console.log('render');
-        }
+        },
       },
       // setupState
       // this.$el
-      'hi, ' + this.msg
+      [
+        h('div', {}, 'hi,' + this.msg),
+        h(Foo, {
+          count: 1,
+        }),
+      ]
       // [
       //   h('p', { class: 'child-class' }, 'hi'),
       //   h('p', { class: 'child-class2' }, 'hi 2'),

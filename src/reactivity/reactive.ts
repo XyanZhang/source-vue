@@ -44,6 +44,10 @@ export function reactive(raw) {
 }
 
 export function createReactiveObject(raw, isReadonly?, isShallow?) {
+  if(!isObject(raw)) {
+    console.warn(`target ${raw} 必须是一个对象`)
+    return raw;
+  }
   return new Proxy(raw, {
     get: createGetter(isReadonly, isShallow),
     set: createSetter(isReadonly, isShallow)
